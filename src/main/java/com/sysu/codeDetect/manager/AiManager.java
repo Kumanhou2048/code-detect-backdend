@@ -25,7 +25,7 @@ public class AiManager {
 
     //调用AI接口获取响应字符串
     public String doChat(String userPrompt){
-        return doChat("",userPrompt, DEFAULT_MODEL);
+        return doChat("你是一个有经验的程序员",userPrompt, DEFAULT_MODEL);
     }
 
     //调用AI接口获取响应字符串

@@ -25,5 +25,6 @@ mybatis-plus:
       logic-delete-value: 1 # 逻辑已删除值(默认为 1)
       logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
 ai:
-  api-key: 45e15eac-3cc5-4166-aad8-13651689f532
-#AI大模型接入（火山引擎deepseek）
+  api-key: 45e15eac-3cc5-4166-aad8-13651689f532 #AI大模型接入（火山引擎deepseek）
+file:
+  upload-path: D:\codeDetecter\frontend\sysu-code-detect-frontend\public\file
