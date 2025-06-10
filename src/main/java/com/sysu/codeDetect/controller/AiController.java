@@ -1,0 +1,50 @@
+package com.sysu.codeDetect.controller;
+
+import com.sysu.codeDetect.common.BaseResponse;
+import com.sysu.codeDetect.common.ErrorCode;
+import com.sysu.codeDetect.common.ResultUtils;
+import com.sysu.codeDetect.exception.BusinessException;
+import com.sysu.codeDetect.model.domain.request.askAiRequest;
+import com.sysu.codeDetect.service.OptimizeRecordService;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
+
+//大模型调用相关接口
+@RestController
+@RequestMapping("/Ai")
+public class AiController {
+
+    @Resource
+    private OptimizeRecordService optimizeRecordService;
+
+    @PostMapping("/askAi")
+    public BaseResponse<String> askAi (@RequestBody askAiRequest request) {
+        if(request == null){
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        //需要优化的代码文件的相对url
+        String sourceFileUrl = request.getSourceFileUrl();
+        //代码语言类型
+        String languageType = request.getLanguageType();
+        //目标大模型
+        String model = request.getModel();
+        //当前用户的账号
+        String userAccount = request.getUserAccount();
+        if(StringUtils.isAnyBlank(sourceFileUrl,languageType,model,userAccount)){
+            return null;
+        }
+        String optimizedCodeFileUrl = optimizeRecordService.askAI(sourceFileUrl,languageType,model,userAccount);
+        if (optimizedCodeFileUrl != null){
+            return ResultUtils.success(optimizedCodeFileUrl);
+        }
+        else{
+            return ResultUtils.error(ErrorCode.AI_ERROR);
+        }
+    }
+}

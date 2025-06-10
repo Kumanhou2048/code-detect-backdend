@@ -1,7 +1,6 @@
 package com.sysu.codeDetect.model.domain.request;
 
 import lombok.Data;
-
 import java.io.Serializable;
 
 /**
