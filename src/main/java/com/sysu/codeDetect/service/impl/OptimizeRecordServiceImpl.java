@@ -3,10 +3,10 @@ package com.sysu.codeDetect.service.impl;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sysu.codeDetect.common.ErrorCode;
 import com.sysu.codeDetect.exception.BusinessException;
+import com.sysu.codeDetect.manager.AiManager;
 import com.sysu.codeDetect.mapper.OptimizeRecordMapper;
 import com.sysu.codeDetect.model.domain.OptimizeRecord;
 import com.sysu.codeDetect.service.OptimizeRecordService;
-import com.sysu.codeDetect.manager.AiManager;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -18,14 +18,14 @@ import java.util.Date;
 import java.util.UUID;
 
 /**
-* @author 陈誉文
-* @description 对于AI大模型调用的相关实现，并且记录用户的历史调用
-* @createDate 2025-06-5 13:39:05
-*/
+ * @author 陈誉文
+ * @description 对于AI大模型调用的相关实现，并且记录用户的历史调用
+ * @createDate 2025-06-5 13:39:05
+ */
 @Service
 @Slf4j
 public class OptimizeRecordServiceImpl extends ServiceImpl<OptimizeRecordMapper, OptimizeRecord>
-    implements OptimizeRecordService{
+        implements OptimizeRecordService {
 
     @Value("${file.upload-path}")
     private String savePath;
@@ -56,7 +56,7 @@ public class OptimizeRecordServiceImpl extends ServiceImpl<OptimizeRecordMapper,
      * @return 优化后的代码文件的url
      */
     @Override
-    public String askAI(String sourceFileUrl, String languageType, String model, String userAccount) {
+    public String askAI(String sourceFileUrl, String sourceFileName,String languageType, String model, String userAccount) {
         // 拼接磁盘完整路径，去除重复 file
         String cleanUrl = sourceFileUrl.replaceFirst("^/file", ""); // "/test.cpp"
         String codeFileFullUrl = savePath + cleanUrl; // "D:/.../file/test.cpp"
@@ -76,7 +76,7 @@ public class OptimizeRecordServiceImpl extends ServiceImpl<OptimizeRecordMapper,
         // 构造提示词
         String systemPrompt = "你是一个经验丰富的程序优化专家。";
         String userPrompt = "请对下面的源代码进行深入优化，并返回两个部分的内容：\n" +
-                "1. 优化后的完整源代码（保持原语言格式），请使用如下标记包裹：\n" +
+                "1. 优化后的完整源代码（保持原语言格式），请使用如下标记包裹，并且不需要使用```代码区```：\n" +
                 "=== 优化后代码开始 ===\n" +
                 "...\n" +
                 "=== 优化后代码结束 ===\n\n" +
@@ -86,7 +86,7 @@ public class OptimizeRecordServiceImpl extends ServiceImpl<OptimizeRecordMapper,
                 "=== 优化报告结束 ===\n\n" +
                 "代码优化报告模板如下，请严格遵循格式生成内容：\n\n" +
                 "代码优化报告\n" +
-                "文件名称：" + fileName + "\n" +
+                "文件名称：" + sourceFileName + "\n" +
                 "分析时间：" + LocalDate.now() + "\n" +
                 "模型版本：" + model + "\n\n" +
                 "一、概览总结\n" +
@@ -147,6 +147,7 @@ public class OptimizeRecordServiceImpl extends ServiceImpl<OptimizeRecordMapper,
         OptimizeRecord optimizeRecord = new OptimizeRecord();
         optimizeRecord.setUserAccount(userAccount);
         optimizeRecord.setOriginalCodeFileUrl(sourceFileUrl);
+        optimizeRecord.setOriginalCodeFileName(sourceFileName);
         optimizeRecord.setOptimizedCodeFileUrl(codeUrl);
         optimizeRecord.setReportUrl(reportUrl);
         optimizeRecord.setCreateTime(new Date());

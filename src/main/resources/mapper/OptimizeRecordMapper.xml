@@ -7,6 +7,7 @@
     <resultMap id="BaseResultMap" type="com.sysu.codeDetect.model.domain.OptimizeRecord">
             <id property="id" column="id" jdbcType="INTEGER"/>
             <result property="userAccount" column="userAccount" jdbcType="VARCHAR"/>
+            <result property="originalCodeFileName" column="originalCodeFileName" jdbcType="VARCHAR"/>
             <result property="originalCodeFileUrl" column="originalCodeFileUrl" jdbcType="VARCHAR"/>
             <result property="optimizedCodeFileUrl" column="optimizedCodeFileUrl" jdbcType="VARCHAR"/>
             <result property="reportUrl" column="reportUrl" jdbcType="VARCHAR"/>
@@ -15,8 +16,8 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,userAccount,originalCodeFileUrl,
-        optimizedCodeFileUrl,reportUrl,createTime,
-        updateTime
+        id,userAccount,originalCodeFileName,
+        originalCodeFileUrl,optimizedCodeFileUrl,reportUrl,
+        createTime,updateTime
     </sql>
 </mapper>

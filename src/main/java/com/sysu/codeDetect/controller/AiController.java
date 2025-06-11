@@ -7,7 +7,6 @@ import com.sysu.codeDetect.exception.BusinessException;
 import com.sysu.codeDetect.model.domain.request.askAiRequest;
 import com.sysu.codeDetect.service.OptimizeRecordService;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,16 +29,18 @@ public class AiController {
         }
         //需要优化的代码文件的相对url
         String sourceFileUrl = request.getSourceFileUrl();
+        //用户上传代码文件的文件名
+        String sourceFileName = request.getSourceFileName();
         //代码语言类型
         String languageType = request.getLanguageType();
         //目标大模型
         String model = request.getModel();
         //当前用户的账号
         String userAccount = request.getUserAccount();
-        if(StringUtils.isAnyBlank(sourceFileUrl,languageType,model,userAccount)){
+        if(StringUtils.isAnyBlank(sourceFileUrl,sourceFileName,languageType,model,userAccount)){
             return null;
         }
-        String optimizedCodeFileUrl = optimizeRecordService.askAI(sourceFileUrl,languageType,model,userAccount);
+        String optimizedCodeFileUrl = optimizeRecordService.askAI(sourceFileUrl,sourceFileName,languageType,model,userAccount);
         if (optimizedCodeFileUrl != null){
             return ResultUtils.success(optimizedCodeFileUrl);
         }

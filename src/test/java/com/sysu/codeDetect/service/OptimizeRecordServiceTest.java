@@ -19,6 +19,7 @@ class OptimizeRecordServiceTest {
         OptimizeRecord optimizeRecord = new OptimizeRecord();
         optimizeRecord.setId(1);
         optimizeRecord.setUserAccount("cyw");
+        optimizeRecord.setOriginalCodeFileName("test1.cpp");
         optimizeRecord.setOriginalCodeFileUrl("aaaa");
         optimizeRecord.setOptimizedCodeFileUrl("bbb");
         optimizeRecord.setReportUrl("ccc");

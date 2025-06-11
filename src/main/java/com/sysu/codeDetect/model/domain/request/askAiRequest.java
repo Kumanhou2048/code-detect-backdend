@@ -11,6 +11,9 @@ public class askAiRequest implements Serializable {
     //需要优化的代码文件的相对url
     private String sourceFileUrl;
 
+    //用户上传的代码文件的原始文件名
+    private String sourceFileName;
+
     //代码语言类型
     private String languageType;
 

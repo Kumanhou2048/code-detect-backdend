@@ -27,6 +27,11 @@ public class OptimizeRecord implements Serializable {
     private String userAccount;
 
     /**
+     * 原始代码文件的文件名
+     */
+    private String originalCodeFileName;
+
+    /**
      * 用户原始上传的文件的 URL
      */
     private String originalCodeFileUrl;
@@ -68,6 +73,7 @@ public class OptimizeRecord implements Serializable {
         OptimizeRecord other = (OptimizeRecord) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
             && (this.getUserAccount() == null ? other.getUserAccount() == null : this.getUserAccount().equals(other.getUserAccount()))
+            && (this.getOriginalCodeFileName() == null ? other.getOriginalCodeFileName() == null : this.getOriginalCodeFileName().equals(other.getOriginalCodeFileName()))
             && (this.getOriginalCodeFileUrl() == null ? other.getOriginalCodeFileUrl() == null : this.getOriginalCodeFileUrl().equals(other.getOriginalCodeFileUrl()))
             && (this.getOptimizedCodeFileUrl() == null ? other.getOptimizedCodeFileUrl() == null : this.getOptimizedCodeFileUrl().equals(other.getOptimizedCodeFileUrl()))
             && (this.getReportUrl() == null ? other.getReportUrl() == null : this.getReportUrl().equals(other.getReportUrl()))
@@ -81,6 +87,7 @@ public class OptimizeRecord implements Serializable {
         int result = 1;
         result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
         result = prime * result + ((getUserAccount() == null) ? 0 : getUserAccount().hashCode());
+        result = prime * result + ((getOriginalCodeFileName() == null) ? 0 : getOriginalCodeFileName().hashCode());
         result = prime * result + ((getOriginalCodeFileUrl() == null) ? 0 : getOriginalCodeFileUrl().hashCode());
         result = prime * result + ((getOptimizedCodeFileUrl() == null) ? 0 : getOptimizedCodeFileUrl().hashCode());
         result = prime * result + ((getReportUrl() == null) ? 0 : getReportUrl().hashCode());
@@ -97,6 +104,7 @@ public class OptimizeRecord implements Serializable {
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
         sb.append(", userAccount=").append(userAccount);
+        sb.append(", originalCodeFileName=").append(originalCodeFileName);
         sb.append(", originalCodeFileUrl=").append(originalCodeFileUrl);
         sb.append(", optimizedCodeFileUrl=").append(optimizedCodeFileUrl);
         sb.append(", reportUrl=").append(reportUrl);

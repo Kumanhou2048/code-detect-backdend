@@ -37,7 +37,7 @@ public class Test {
 
         // 构建请求对象
         ChatCompletionRequest request = ChatCompletionRequest.builder()
-                .model("deepseek-v3-250324")
+                .model("deepseek-r1-250528")
                 .messages(messages)
                 .build();
 
