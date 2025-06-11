@@ -1,7 +1,11 @@
 package com.sysu.codeDetect.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.sysu.codeDetect.common.BaseResponse;
 import com.sysu.codeDetect.model.domain.OptimizeRecord;
+import com.sysu.codeDetect.service.impl.OptimizeRecordServiceImpl;
+
+import java.util.List;
 
 /**
  * @author 陈誉文
@@ -21,4 +25,6 @@ public interface OptimizeRecordService extends IService<OptimizeRecord> {
      * @return 优化后的代码文件的url
      */
     String askAI(String sourceFileUrl, String sourceFileName,String languageType, String model, String userAccount);
+
+    BaseResponse<List<OptimizeRecordServiceImpl.optRecord>> getOptimizeRecordList(String userAccount);
 }

@@ -1,12 +1,16 @@
 package com.sysu.codeDetect.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.sysu.codeDetect.common.BaseResponse;
 import com.sysu.codeDetect.common.ErrorCode;
+import com.sysu.codeDetect.common.ResultUtils;
 import com.sysu.codeDetect.exception.BusinessException;
 import com.sysu.codeDetect.manager.AiManager;
 import com.sysu.codeDetect.mapper.OptimizeRecordMapper;
 import com.sysu.codeDetect.model.domain.OptimizeRecord;
 import com.sysu.codeDetect.service.OptimizeRecordService;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -14,7 +18,9 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.io.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -157,6 +163,42 @@ public class OptimizeRecordServiceImpl extends ServiceImpl<OptimizeRecordMapper,
             return null;
         }
         return codeUrl;
+    }
+
+    @Data
+    public class optRecord{
+        String originalName;
+        String originalCodeFileUrl;
+        String optimizedCodeFileUrl;
+        String reportUrl;
+        Date createTime;
+    }
+
+    @Override
+    public BaseResponse<List<optRecord>> getOptimizeRecordList(String userAccount) {
+        QueryWrapper<OptimizeRecord> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("userAccount", userAccount);
+        queryWrapper.select("originalCodeFileName","originalCodeFileUrl", "optimizedCodeFileUrl", "reportUrl", "createTime");
+        List<OptimizeRecord> optimizeRecords = this.list(queryWrapper);
+        if(optimizeRecords.isEmpty()) {
+            return ResultUtils.error(ErrorCode.NULL_ERROR);
+        }
+
+        List<optRecord> result = new ArrayList<>();
+
+        for (OptimizeRecord source : optimizeRecords) {
+            optRecord target = new optRecord();
+            // 手动映射共有字段
+            target.setOriginalCodeFileUrl(source.getOriginalCodeFileUrl());
+            target.setOptimizedCodeFileUrl(source.getOptimizedCodeFileUrl());
+            target.setReportUrl(source.getReportUrl());
+            target.setCreateTime(source.getCreateTime());
+            target.setOriginalName(source.getOriginalCodeFileName());
+
+            result.add(target);
+        }
+
+        return ResultUtils.success(result);
     }
 }
 

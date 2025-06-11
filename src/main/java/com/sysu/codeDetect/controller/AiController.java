@@ -6,13 +6,12 @@ import com.sysu.codeDetect.common.ResultUtils;
 import com.sysu.codeDetect.exception.BusinessException;
 import com.sysu.codeDetect.model.domain.request.askAiRequest;
 import com.sysu.codeDetect.service.OptimizeRecordService;
+import com.sysu.codeDetect.service.impl.OptimizeRecordServiceImpl;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 //大模型调用相关接口
 @RestController
@@ -47,5 +46,10 @@ public class AiController {
         else{
             return ResultUtils.error(ErrorCode.AI_ERROR);
         }
+    }
+
+    @PostMapping("/showrecord")
+    public BaseResponse<List<OptimizeRecordServiceImpl.optRecord>> showRecord(@RequestParam String userAccount) {
+        return optimizeRecordService.getOptimizeRecordList(userAccount);
     }
 }
