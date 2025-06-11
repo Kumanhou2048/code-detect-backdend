@@ -27,4 +27,6 @@ public interface OptimizeRecordService extends IService<OptimizeRecord> {
     String askAI(String sourceFileUrl, String sourceFileName,String languageType, String model, String userAccount);
 
     BaseResponse<List<OptimizeRecordServiceImpl.optRecord>> getOptimizeRecordList(String userAccount);
+
+    BaseResponse<List<OptimizeRecordServiceImpl.optRecord>> getSelectOptimizeRecordList(String userAccount, String fileName, String date);
 }

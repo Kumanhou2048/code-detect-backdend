@@ -1,6 +1,9 @@
 package com.sysu.codeDetect.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sysu.codeDetect.common.BaseResponse;
 import com.sysu.codeDetect.common.ErrorCode;
@@ -199,6 +202,39 @@ public class OptimizeRecordServiceImpl extends ServiceImpl<OptimizeRecordMapper,
         }
 
         return ResultUtils.success(result);
+    }
+
+    @Override
+    public BaseResponse<List<OptimizeRecordServiceImpl.optRecord>>
+    getSelectOptimizeRecordList(String userAccount, String fileName, String date) {
+        LambdaQueryWrapper<OptimizeRecord> wrapper = Wrappers.lambdaQuery();
+        wrapper.eq(OptimizeRecord::getUserAccount, userAccount);
+
+        wrapper.eq(OptimizeRecord::getUserAccount, userAccount) // userAccount必填
+                .eq(StringUtils.isNotBlank(fileName), OptimizeRecord::getOriginalCodeFileName, fileName) // fileName可选
+                .apply(StringUtils.isNotBlank(date), "DATE(createTime) = {0}", date);
+
+
+        List<OptimizeRecord> selectOptimizeRecords = this.list(wrapper);
+        if(selectOptimizeRecords.isEmpty()) {
+            return ResultUtils.error(ErrorCode.NULL_ERROR);
+        }
+        List<optRecord> result = new ArrayList<>();
+
+        for (OptimizeRecord source : selectOptimizeRecords) {
+            optRecord target = new optRecord();
+            // 手动映射共有字段
+            target.setOriginalCodeFileUrl(source.getOriginalCodeFileUrl());
+            target.setOptimizedCodeFileUrl(source.getOptimizedCodeFileUrl());
+            target.setReportUrl(source.getReportUrl());
+            target.setCreateTime(source.getCreateTime());
+            target.setOriginalName(source.getOriginalCodeFileName());
+
+            result.add(target);
+        }
+
+        return ResultUtils.success(result);
+
     }
 }
 

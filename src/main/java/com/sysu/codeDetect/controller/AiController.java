@@ -52,4 +52,9 @@ public class AiController {
     public BaseResponse<List<OptimizeRecordServiceImpl.optRecord>> showRecord(@RequestParam String userAccount) {
         return optimizeRecordService.getOptimizeRecordList(userAccount);
     }
+
+    @PostMapping("/showselectrecord")
+    public BaseResponse<List<OptimizeRecordServiceImpl.optRecord>> showSelectRecord(String userAccount, String fileName, String date) {
+        return  optimizeRecordService.getSelectOptimizeRecordList(userAccount,fileName,date);
+    }
 }
