@@ -5,8 +5,10 @@ import com.sysu.codeDetect.common.ErrorCode;
 import com.sysu.codeDetect.common.ResultUtils;
 import com.sysu.codeDetect.exception.BusinessException;
 import com.sysu.codeDetect.model.domain.request.askAiRequest;
+import com.sysu.codeDetect.model.domain.request.showrecordRequest;
 import com.sysu.codeDetect.service.OptimizeRecordService;
 import com.sysu.codeDetect.service.impl.OptimizeRecordServiceImpl;
+import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,13 +50,14 @@ public class AiController {
         }
     }
 
+
     @PostMapping("/showrecord")
-    public BaseResponse<List<OptimizeRecordServiceImpl.optRecord>> showRecord(@RequestParam String userAccount) {
-        return optimizeRecordService.getOptimizeRecordList(userAccount);
+    public BaseResponse<List<OptimizeRecordServiceImpl.optRecord>> showRecord(@RequestBody showrecordRequest scRequest) {
+        return optimizeRecordService.getOptimizeRecordList(scRequest.getUserAccount());
     }
 
     @PostMapping("/showselectrecord")
-    public BaseResponse<List<OptimizeRecordServiceImpl.optRecord>> showSelectRecord(String userAccount, String fileName, String date) {
-        return  optimizeRecordService.getSelectOptimizeRecordList(userAccount,fileName,date);
+    public BaseResponse<List<OptimizeRecordServiceImpl.optRecord>> showSelectRecord(@RequestBody showrecordRequest scRequest) {
+        return  optimizeRecordService.getSelectOptimizeRecordList(scRequest.getUserAccount(), scRequest.getFileName(), scRequest.getDate());
     }
 }
